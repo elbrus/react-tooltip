@@ -50,7 +50,7 @@ class PortalPopper extends Component {
       }
     })
 
-    this.popper.onUpdate((data) => {
+    this.popper.onUpdate = (data) => {
       if (this.isUnmounted) return
 
       const newState = {}
