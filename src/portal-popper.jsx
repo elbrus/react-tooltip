@@ -40,12 +40,14 @@ class PortalPopper extends Component {
 
   componentDidMount () {
     this.popper = new this.props.Popper(this.props.getTargetNode(), this.refs.popper.domNode, {
-       content: this.props.title,
+      content: this.props.title,
       placement: this.props.placement,
-      arrowElement: this.refs.arrow,
       modifiers: {
         applyStyle: {
           enabled: true
+        },
+        arrow: { 
+          element: this.refs.arrow
         }
       }
     })
