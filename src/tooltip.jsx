@@ -37,6 +37,7 @@ class Tooltip extends Component {
 				placement={placement}
 				addArrow={addArrow}
 				className={className}
+				ref="popper"
 			/>
 		);
 	}
