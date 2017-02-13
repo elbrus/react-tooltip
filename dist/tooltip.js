@@ -1,0 +1,149 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _portalPopper = require('./portal-popper');
+
+var _portalPopper2 = _interopRequireDefault(_portalPopper);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Tooltip = function (_Component) {
+	_inherits(Tooltip, _Component);
+
+	function Tooltip() {
+		var _ref;
+
+		_classCallCheck(this, Tooltip);
+
+		for (var _len = arguments.length, props = Array(_len), _key = 0; _key < _len; _key++) {
+			props[_key] = arguments[_key];
+		}
+
+		var _this = _possibleConstructorReturn(this, (_ref = Tooltip.__proto__ || Object.getPrototypeOf(Tooltip)).call.apply(_ref, [this].concat(props)));
+
+		_this.state = {
+			shouldShow: false
+		};
+		_this.triggers = {
+			hover: {
+				onMouseOver: function onMouseOver() {
+					return _this.setState({ shouldShow: true });
+				},
+				onMouseOut: function onMouseOut() {
+					return _this.setState({ shouldShow: false });
+				}
+			},
+			click: {
+				onClick: function onClick() {
+					return _this.setState({ shouldShow: !_this.state.shouldShow });
+				}
+			},
+			focus: {
+				onFocus: function onFocus() {
+					return _this.setState({ shouldShow: true });
+				},
+				onBlur: function onBlur() {
+					return _this.setState({ shouldShow: false });
+				}
+			}
+		};
+		return _this;
+	}
+
+	_createClass(Tooltip, [{
+		key: '_popper',
+		value: function _popper() {
+			var _this2 = this;
+
+			var _props = this.props,
+			    alwaysShow = _props.alwaysShow,
+			    title = _props.title,
+			    placement = _props.placement,
+			    addArrow = _props.addArrow,
+			    className = _props.className;
+
+
+			if (alwaysShow !== true && (!this.state.shouldShow || alwaysShow === false)) {
+				return null;
+			}
+
+			return _react2.default.createElement(_portalPopper2.default, {
+				getTargetNode: function getTargetNode() {
+					return _this2.refs.target;
+				},
+				title: title,
+				placement: placement,
+				addArrow: addArrow,
+				className: className
+			});
+		}
+	}, {
+		key: 'createEvents',
+		value: function createEvents(trigger) {
+			var _this3 = this;
+
+			var events = {};
+
+			trigger.forEach(function (item) {
+				events = Object.assign(events, _this3.triggers[item]);
+			});
+
+			return events;
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _props2 = this.props,
+			    alwaysShow = _props2.alwaysShow,
+			    children = _props2.children,
+			    trigger = _props2.trigger;
+
+			var actionProps = alwaysShow ? {} : this.createEvents(trigger);
+
+			return _react2.default.createElement(
+				'span',
+				null,
+				(0, _react.cloneElement)(_react.Children.only(children), _extends({
+					ref: 'target'
+				}, actionProps)),
+				this._popper()
+			);
+		}
+	}]);
+
+	return Tooltip;
+}(_react.Component);
+
+Tooltip.propTypes = {
+	className: _react.PropTypes.string,
+	placement: _react.PropTypes.string,
+	title: _react.PropTypes.node.isRequired,
+	alwaysShow: _react.PropTypes.bool,
+	addArrow: _react.PropTypes.bool,
+	trigger: _react.PropTypes.arrayOf(_react.PropTypes.oneOf(['click', 'hover', 'focus']))
+};
+
+Tooltip.defaultProps = {
+	placement: 'top',
+	trigger: ['hover']
+};
+
+exports.default = Tooltip;
+module.exports = exports['default'];
