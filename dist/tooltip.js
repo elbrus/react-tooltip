@@ -91,7 +91,8 @@ var Tooltip = function (_Component) {
 				title: title,
 				placement: placement,
 				addArrow: addArrow,
-				className: className
+				className: className,
+				ref: 'popper'
 			});
 		}
 	}, {
