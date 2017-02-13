@@ -1,54 +1,84 @@
-import React, { Children, cloneElement, Component, PropTypes } from 'react'
-
-import PortalPopper from './portal-popper'
+import React, { Children, cloneElement, Component, PropTypes } from 'react';
+import PortalPopper from './portal-popper';
 
 class Tooltip extends Component {
-  constructor (...props) {
-    super(...props)
+	constructor(...props) {
+		super(...props);
 
-    this.state = {
-      shouldShow: false,
-    }
-  }
+		this.state = {
+			shouldShow: false
+		};
+		this.triggers = {
+			hover: {
+				onMouseOver: () => this.setState({shouldShow: true}),
+				onMouseOut: () => this.setState({shouldShow: false})
+			},
+			click: {
+				onClick: () => this.setState({shouldShow: !this.state.shouldShow})
+			},
+			focus: {
+				onFocus: () => this.setState({shouldShow: true}),
+				onBlur: () => this.setState({shouldShow: false})
+			}
+		};
+	}
 
-  render () {
-    const actionProps = this.props.visible == null ? {
-      onMouseOver: () => this.setState({ shouldShow: true }),
-      onMouseOut: () => this.setState({ shouldShow: false }),
-    } : {}
+	_popper() {
+		const {alwaysShow, title, placement, addArrow, className} = this.props;
 
-    return (
-      <span>
-        {cloneElement(Children.only(this.props.children), {
-          ref: 'target',
-          ...actionProps,
-        })}
-        {this._popper()}
-      </span>
-    )
-  }
+		if (alwaysShow !== true && (!this.state.shouldShow || alwaysShow === false)) {
+			return null;
+		}
 
-  _popper () {
-    if (this.props.visible !== true && (!this.state.shouldShow || this.props.visible === false)) return null
+		return (
+			<PortalPopper
+				getTargetNode={() => this.refs.target}
+				title={title}
+				placement={placement}
+				addArrow={addArrow}
+				className={className}
+			/>
+		);
+	}
 
-    return (
-      <PortalPopper
-        getTargetNode={() => this.refs.target}
-        title={this.props.title}
-        placement={this.props.placement}
-      />
-    )
-  }
+	createEvents(trigger) {
+		let events = {};
+
+		trigger.forEach(item => {
+			events = Object.assign(events, this.triggers[item]);
+		});
+
+		return events;
+	}
+
+	render() {
+		const {alwaysShow, children, trigger} = this.props;
+		const actionProps = alwaysShow ? {} : this.createEvents(trigger);
+
+		return (
+			<span>
+		        {cloneElement(Children.only(children), {
+			        ref: 'target',
+			        ...actionProps
+		        })}
+				{this._popper()}
+            </span>
+		)
+	}
 }
 
 Tooltip.propTypes = {
-  placement: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  visible: PropTypes.bool,
-}
+	className: PropTypes.string,
+	placement: PropTypes.string,
+	title: PropTypes.node.isRequired,
+	alwaysShow: PropTypes.bool,
+	addArrow: PropTypes.bool,
+	trigger: PropTypes.arrayOf(PropTypes.oneOf(['click', 'hover', 'focus']))
+};
 
 Tooltip.defaultProps = {
-  placement: 'top',
-}
+	placement: 'top',
+	trigger: ['hover']
+};
 
-export default Tooltip
+export default Tooltip;
