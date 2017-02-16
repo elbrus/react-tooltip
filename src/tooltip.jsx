@@ -14,14 +14,20 @@ class Tooltip extends Component {
 					if (this.closeTimeout) {
 						clearTimeout(this.closeTimeout);
 					} else {
-						this.openTimeout = setTimeout(() => this.setState({shouldShow: true}), props.hoverOpenDelay);
+						this.openTimeout = setTimeout(() => {
+							this.setState({shouldShow: true});
+							this.openTimeout = null;
+						}, props[0].hoverOpenDelay);
 					}
 				},
 				onMouseOut: () => {
 					if (this.openTimeout) {
 						clearTimeout(this.openTimeout);
 					} else {
-						this.closeTimeout = setTimeout(() => this.setState({shouldShow: false}), props.hoverCloseDelay);
+						this.closeTimeout = setTimeout(() => {
+							this.setState({shouldShow: false});
+							this.closeTimeout = null;
+						}, props[0].hoverCloseDelay);
 					}
 				}
 			},
