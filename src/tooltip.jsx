@@ -2,6 +2,8 @@ import React, { Children, cloneElement, Component, PropTypes } from 'react';
 import PortalPopper from './portal-popper';
 import onClickOutside from 'react-onclickoutside';
 
+const noop = () => false;
+
 class Tooltip extends Component {
 	constructor(...props) {
 		super(...props);
@@ -16,7 +18,7 @@ class Tooltip extends Component {
 						clearTimeout(this.closeTimeout);
 					} else {
 						this.openTimeout = setTimeout(() => {
-							this.setState({shouldShow: true});
+							this.showHandler(true);
 							this.openTimeout = null;
 						}, props[0].hoverOpenDelay);
 					}
@@ -26,20 +28,30 @@ class Tooltip extends Component {
 						clearTimeout(this.openTimeout);
 					} else {
 						this.closeTimeout = setTimeout(() => {
-							this.setState({shouldShow: false});
+							this.showHandler(false);
 							this.closeTimeout = null;
 						}, props[0].hoverCloseDelay);
 					}
 				}
 			},
 			click: {
-				onClick: () => this.setState({shouldShow: !this.state.shouldShow})
+				onClick: () => this.showHandler(!this.state.shouldShow)
 			},
 			focus: {
-				onFocus: () => this.setState({shouldShow: true}),
-				onBlur: () => this.setState({shouldShow: false})
+				onFocus: () => this.showHandler(true),
+				onBlur: () => this.showHandler(false)
 			}
 		};
+	}
+
+	showHandler(shouldShow) {
+		this.setState({shouldShow});
+
+		if (shouldShow) {
+			this.props.onOpen();
+		} else {
+			this.props.onClose();
+		}
 	}
 
 	_popper() {
@@ -65,7 +77,7 @@ class Tooltip extends Component {
 		const {trigger, rootClose} = this.props;
 
 		if (rootClose && ~trigger.indexOf('click')) {
-			this.setState({shouldShow: false});
+			this.showHandler(false);
 		}
 	}
 
@@ -105,14 +117,18 @@ Tooltip.propTypes = {
 	rootClose: PropTypes.bool,
 	trigger: PropTypes.arrayOf(PropTypes.oneOf(['click', 'hover', 'focus'])),
 	hoverOpenDelay: PropTypes.number,
-	hoverCloseDelay: PropTypes.number
+	hoverCloseDelay: PropTypes.number,
+	onOpen: PropTypes.func,
+	onClose: PropTypes.func
 };
 
 Tooltip.defaultProps = {
 	placement: 'top',
 	trigger: ['hover'],
 	hoverOpenDelay: 400,
-	hoverCloseDelay: 100
+	hoverCloseDelay: 100,
+	onOpen: noop,
+	onClose: noop
 };
 
 export default onClickOutside(Tooltip);
