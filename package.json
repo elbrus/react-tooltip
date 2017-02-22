@@ -1,6 +1,6 @@
 {
   "name": "@cypress/react-tooltip",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "A tooltip component for React apps",
   "main": "dist/tooltip.js",
   "scripts": {
@@ -24,7 +24,8 @@
     "dist"
   ],
   "dependencies": {
-    "popper.js": "^1.0.1"
+    "popper.js": "^1.0.1",
+    "react-onclickoutside": "^5.9.0"
   },
   "devDependencies": {
     "@cypress/core-releaser": "^0.1.8",

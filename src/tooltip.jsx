@@ -1,5 +1,6 @@
 import React, { Children, cloneElement, Component, PropTypes } from 'react';
 import PortalPopper from './portal-popper';
+import onClickOutside from 'react-onclickoutside';
 
 class Tooltip extends Component {
 	constructor(...props) {
@@ -60,6 +61,14 @@ class Tooltip extends Component {
 		);
 	}
 
+	handleClickOutside() {
+		const {trigger, rootClose} = this.props;
+
+		if (rootClose && ~trigger.indexOf('click')) {
+			this.setState({shouldShow: false});
+		}
+	}
+
 	createEvents(trigger) {
 		let events = {};
 
@@ -71,27 +80,29 @@ class Tooltip extends Component {
 	}
 
 	render() {
-		const {alwaysShow, children, trigger} = this.props;
+		const {alwaysShow, children, trigger, holderClassName} = this.props;
 		const actionProps = alwaysShow ? {} : this.createEvents(trigger);
 
 		return (
-			<span>
-		        {cloneElement(Children.only(children), {
-			        ref: 'target',
-			        ...actionProps
-		        })}
+			<span className={holderClassName}>
+				{cloneElement(Children.only(children), {
+					ref: 'target',
+					...actionProps
+				})}
 				{this._popper()}
-            </span>
+			</span>
 		)
 	}
 }
 
 Tooltip.propTypes = {
 	className: PropTypes.string,
+	holderClassName: PropTypes.string,
 	placement: PropTypes.string,
 	title: PropTypes.node.isRequired,
 	alwaysShow: PropTypes.bool,
 	addArrow: PropTypes.bool,
+	rootClose: PropTypes.bool,
 	trigger: PropTypes.arrayOf(PropTypes.oneOf(['click', 'hover', 'focus'])),
 	hoverOpenDelay: PropTypes.number,
 	hoverCloseDelay: PropTypes.number
@@ -104,4 +115,4 @@ Tooltip.defaultProps = {
 	hoverCloseDelay: 100
 };
 
-export default Tooltip;
+export default onClickOutside(Tooltip);
