@@ -87,7 +87,7 @@ class PortalPopper extends Component {
 		const {placement, title, addArrow, className} = this.props;
 
 		return (
-			<Portal ref="popper" className={`react-tooltip react-tooltip-${placement} ${className}`} style={this._getPopperStyle()}>
+			<Portal ref="popper" className={`ignore-react-onclickoutside react-tooltip react-tooltip-${placement} ${className}`} style={this._getPopperStyle()}>
 				{title}
 				{addArrow && <div ref="arrow" className="react-tooltip-arrow" style={this._getArrowStyle()}></div>}
 			</Portal>
