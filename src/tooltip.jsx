@@ -37,6 +37,9 @@ class Tooltip extends Component {
 			click: {
 				onClick: () => this.showHandler(!this.state.shouldShow)
 			},
+			'click-close': {
+				onClick: () => this.showHandler(false)
+			},
 			focus: {
 				onFocus: () => this.showHandler(true),
 				onBlur: () => this.showHandler(false)
@@ -115,7 +118,7 @@ Tooltip.propTypes = {
 	alwaysShow: PropTypes.bool,
 	addArrow: PropTypes.bool,
 	rootClose: PropTypes.bool,
-	trigger: PropTypes.arrayOf(PropTypes.oneOf(['click', 'hover', 'focus'])),
+	trigger: PropTypes.arrayOf(PropTypes.oneOf(['click', 'hover', 'focus', 'click-close'])),
 	hoverOpenDelay: PropTypes.number,
 	hoverCloseDelay: PropTypes.number,
 	onOpen: PropTypes.func,
