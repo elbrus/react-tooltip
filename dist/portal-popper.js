@@ -140,7 +140,11 @@ var PortalPopper = function (_Component) {
 			return _react2.default.createElement(
 				_portal2.default,
 				{ ref: 'popper', className: 'ignore-react-onclickoutside react-tooltip react-tooltip-' + placement + ' ' + className, style: this._getPopperStyle() },
-				title,
+				_react2.default.createElement(
+					'div',
+					{ className: 'react-tooltip-text' },
+					title
+				),
 				addArrow && _react2.default.createElement('div', { ref: 'arrow', className: 'react-tooltip-arrow', style: this._getArrowStyle() })
 			);
 		}
