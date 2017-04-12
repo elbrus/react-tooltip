@@ -88,7 +88,7 @@ class PortalPopper extends Component {
 
 		return (
 			<Portal ref="popper" className={`ignore-react-onclickoutside react-tooltip react-tooltip-${placement} ${className}`} style={this._getPopperStyle()}>
-				{title}
+				<div className="react-tooltip-text">{title}</div>
 				{addArrow && <div ref="arrow" className="react-tooltip-arrow" style={this._getArrowStyle()}></div>}
 			</Portal>
 		)
