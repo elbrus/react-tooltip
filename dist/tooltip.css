@@ -1,0 +1,87 @@
+/* line 4, E:/GIT/react-tooltip/src/main.scss */
+.react-tooltip {
+  background: #111;
+  border-radius: 3px;
+  color: #FFF;
+  display: inline-block;
+  font-size: 12px;
+  left: 0;
+  max-width: 200px;
+  padding: 4px 6px;
+  text-align: center;
+  top: 0;
+  z-index: 100;
+}
+
+/* line 18, E:/GIT/react-tooltip/src/main.scss */
+.react-tooltip-arrow {
+  border-color: transparent;
+  border-style: solid;
+  height: 0;
+  position: absolute;
+  width: 0;
+}
+
+/* line 26, E:/GIT/react-tooltip/src/main.scss */
+.react-tooltip-top,
+.react-tooltip-top-start,
+.react-tooltip-top-end {
+  margin-bottom: 5px;
+}
+
+/* line 31, E:/GIT/react-tooltip/src/main.scss */
+.react-tooltip-top .react-tooltip-arrow,
+.react-tooltip-top-start .react-tooltip-arrow,
+.react-tooltip-top-end .react-tooltip-arrow {
+  bottom: -5px;
+  border-width: 5px 5px 0;
+  border-top-color: #111;
+}
+
+/* line 38, E:/GIT/react-tooltip/src/main.scss */
+.react-tooltip-right,
+.react-tooltip-right-start,
+.react-tooltip-right-end {
+  margin-left: 5px;
+}
+
+/* line 43, E:/GIT/react-tooltip/src/main.scss */
+.react-tooltip-right .react-tooltip-arrow,
+.react-tooltip-right-start .react-tooltip-arrow,
+.react-tooltip-right-end .react-tooltip-arrow {
+  left: -5px;
+  border-width: 5px 5px 5px 0;
+  border-right-color: #111;
+}
+
+/* line 50, E:/GIT/react-tooltip/src/main.scss */
+.react-tooltip-left,
+.react-tooltip-left-start,
+.react-tooltip-left-end {
+  margin-right: 5px;
+}
+
+/* line 55, E:/GIT/react-tooltip/src/main.scss */
+.react-tooltip-left .react-tooltip-arrow,
+.react-tooltip-left-start .react-tooltip-arrow,
+.react-tooltip-left-end .react-tooltip-arrow {
+  right: -5px;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #111;
+}
+
+/* line 62, E:/GIT/react-tooltip/src/main.scss */
+.react-tooltip-bottom,
+.react-tooltip-bottom-start,
+.react-tooltip-bottom-end {
+  margin-top: 5px;
+}
+
+/* line 67, E:/GIT/react-tooltip/src/main.scss */
+.react-tooltip-bottom .react-tooltip-arrow,
+.react-tooltip-bottom-start .react-tooltip-arrow,
+.react-tooltip-bottom-end .react-tooltip-arrow {
+  top: -5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: #111;
+}
