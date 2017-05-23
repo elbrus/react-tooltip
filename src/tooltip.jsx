@@ -5,47 +5,58 @@ import onClickOutside from 'react-onclickoutside';
 const noop = () => false;
 
 class Tooltip extends Component {
-	constructor(...props) {
-		super(...props);
+	state = {
+		shouldShow: false
+	};
 
-		this.state = {
-			shouldShow: false
-		};
+	componentWillMount() {
 		this.triggers = {
 			hover: {
-				onMouseOver: () => {
-					if (this.closeTimeout) {
-						clearTimeout(this.closeTimeout);
-					} else {
-						this.openTimeout = setTimeout(() => {
-							this.showHandler(true);
-							this.openTimeout = null;
-						}, props[0].hoverOpenDelay);
-					}
-				},
-				onMouseOut: () => {
-					if (this.openTimeout) {
-						clearTimeout(this.openTimeout);
-					} else {
-						this.closeTimeout = setTimeout(() => {
-							this.showHandler(false);
-							this.closeTimeout = null;
-						}, props[0].hoverCloseDelay);
-					}
-				}
+				onMouseOver: this.onMouseOver,
+				onMouseOut: this.onMouseOut
 			},
 			click: {
-				onClick: () => this.showHandler(!this.state.shouldShow)
+				onClick: this.onToggleHandler
 			},
 			'click-close': {
-				onClick: () => this.showHandler(false)
+				onClick: this.onHideHandler
 			},
 			focus: {
-				onFocus: () => this.showHandler(true),
-				onBlur: () => this.showHandler(false)
+				onFocus: this.onShowHandler,
+				onBlur: this.onHideHandler
 			}
 		};
 	}
+
+	onMouseOver = () => {
+		if (this.closeTimeout) {
+			clearTimeout(this.closeTimeout);
+		} else {
+			this.openTimeout = setTimeout(() => {
+				this.showHandler(true);
+				this.openTimeout = null;
+			}, props[0].hoverOpenDelay);
+		}
+	};
+
+	onMouseOut = () => {
+		if (this.openTimeout) {
+			clearTimeout(this.openTimeout);
+		} else {
+			this.closeTimeout = setTimeout(() => {
+				this.showHandler(false);
+				this.closeTimeout = null;
+			}, props[0].hoverCloseDelay);
+		}
+	};
+
+	onShowHandler = () => this.showHandler(true);
+
+	onHideHandler = () => this.showHandler(false);
+
+	onToggleHandler = () => this.showHandler(!this.state.shouldShow);
+
+	getTargetNode = () => this.refs.target;
 
 	showHandler(shouldShow) {
 		this.setState({shouldShow});
@@ -66,7 +77,7 @@ class Tooltip extends Component {
 
 		return (
 			<PortalPopper
-				getTargetNode={() => this.refs.target}
+				getTargetNode={this.getTargetNode}
 				title={title}
 				placement={placement}
 				addArrow={addArrow}

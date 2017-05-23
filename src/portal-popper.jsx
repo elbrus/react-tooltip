@@ -15,14 +15,10 @@ const initialPopperProps = {
 };
 
 class PortalPopper extends Component {
-	constructor(...props) {
-		super(...props);
-
-		this.state = {
-			arrowProps: initialArrowProps,
-			popperProps: initialPopperProps
-		};
-	}
+	state = {
+		arrowProps: initialArrowProps,
+		popperProps: initialPopperProps
+	};
 
 	componentDidMount() {
 		this.popper = new this.props.Popper(this.props.getTargetNode(), this.refs.popper.domNode, {
