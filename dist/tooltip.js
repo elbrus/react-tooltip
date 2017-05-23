@@ -61,7 +61,7 @@ var Tooltip = function (_Component) {
 				_this.openTimeout = setTimeout(function () {
 					_this.showHandler(true);
 					_this.openTimeout = null;
-				}, props[0].hoverOpenDelay);
+				}, _this.props.hoverOpenDelay);
 			}
 		}, _this.onMouseOut = function () {
 			if (_this.openTimeout) {
@@ -70,7 +70,7 @@ var Tooltip = function (_Component) {
 				_this.closeTimeout = setTimeout(function () {
 					_this.showHandler(false);
 					_this.closeTimeout = null;
-				}, props[0].hoverCloseDelay);
+				}, _this.props.hoverCloseDelay);
 			}
 		}, _this.onShowHandler = function () {
 			return _this.showHandler(true);
