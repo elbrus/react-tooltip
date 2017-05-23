@@ -36,7 +36,7 @@ class Tooltip extends Component {
 			this.openTimeout = setTimeout(() => {
 				this.showHandler(true);
 				this.openTimeout = null;
-			}, props[0].hoverOpenDelay);
+			}, this.props.hoverOpenDelay);
 		}
 	};
 
@@ -47,7 +47,7 @@ class Tooltip extends Component {
 			this.closeTimeout = setTimeout(() => {
 				this.showHandler(false);
 				this.closeTimeout = null;
-			}, props[0].hoverCloseDelay);
+			}, this.props.hoverCloseDelay);
 		}
 	};
 
