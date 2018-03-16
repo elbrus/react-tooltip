@@ -2,6 +2,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Popper from 'popper.js';
+
 import Portal from './portal';
 
 const initialArrowProps = {
@@ -18,39 +19,35 @@ const initialPopperProps = {
 class PortalPopper extends Component {
 	state = {
 		arrowProps: initialArrowProps,
-		popperProps: initialPopperProps
+		popperProps: initialPopperProps,
+		flipped: false
 	};
 
 	componentDidMount() {
-		this.popper = new this.props.Popper(this.props.getTargetNode(), this.refs.popper.domNode, {
-			content: this.props.title,
-			placement: this.props.placement,
+		const {getTargetNode, title, placement, boundary} = this.props;
+
+		this.popper = new this.props.Popper(getTargetNode(), this.refs.portal.domNode, {
+			content: title,
+			placement,
 			modifiers: {
-				applyStyle: {
-					enabled: true
-				},
 				arrow: {
 					element: this.refs.arrow
+				},
+				preventOverflow: {
+					boundariesElement: boundary
 				}
-			}
+			},
+			onCreate: this._updateData,
+			onUpdate: this._updateData
 		});
 
-		this.popper.onUpdate = (data) => {
-			if (this.isUnmounted) {
-				return;
-			}
+		this.popper.scheduleUpdate();
+	}
 
-			const newState = {};
-			if (data.offsets.arrow) {
-				newState.arrowProps = data.offsets.arrow;
-			}
-			if (data.offsets.popper) {
-				newState.popperProps = data.offsets.popper;
-			}
-			this.setState(newState);
-		};
-
-		this.popper.update();
+	componentDidUpdate (prevProps) {
+		if (prevProps.updateCue !== this.props.updateCue) {
+			this.popper.scheduleUpdate();
+		}
 	}
 
 	componentWillUnmount() {
@@ -59,32 +56,62 @@ class PortalPopper extends Component {
 	}
 
 	_getPopperStyle() {
-		const left = Math.round(this.state.popperProps.left);
-		const top = Math.round(this.state.popperProps.top);
-		const transform = `translate3d(${left}px, ${top}px, 0)`;
+		const {left, top, position} = this.state.popperProps;
+		const transform = `translate3d(${Math.round(left)}px, ${Math.round(top)}px, 0)`;
 
 		return {
-			position: this.state.popperProps.position,
+			position,
 			transform,
 			WebkitTransform: transform
 		};
 	}
 
-	_getArrowStyle() {
-		const left = _.isNumber(this.state.arrowProps.left) ? Math.round(this.state.arrowProps.left) : null;
-		const top = _.isNumber(this.state.arrowProps.top) ? Math.round(this.state.arrowProps.top) : null;
+	_getArrowStyle () {
+		const {left, top} = this.state.arrowProps;
 
 		return {
-			left,
-			top
-		};
+			left: this._getArrowProp(left),
+			top: this._getArrowProp(top)
+		}
 	}
 
+	_getArrowProp (position) {
+		return _.isNumber(position) ? Math.round(position) : null;
+	}
+
+	_updateData = (data) => {
+		if (this.isUnmounted) {
+			return;
+		}
+
+		const newState = {};
+
+		if (data.offsets.arrow) {
+			newState.arrowProps = data.offsets.arrow;
+		}
+
+		if (data.offsets.popper) {
+			newState.popperProps = data.offsets.popper;
+		}
+
+		if (data.flipped != null) {
+			newState.flipped = data.flipped;
+		}
+
+		this.setState(newState);
+	};
+
 	render() {
-		const {placement, title, addArrow, className} = this.props;
+		const {placement, title, addArrow, className, appendTo} = this.props;
+		const flippedClass = this.state.flipped ? 'react-tooltip-flipped' : '';
 
 		return (
-			<Portal ref="popper" className={`ignore-react-onclickoutside react-tooltip react-tooltip-${placement} ${className}`} style={this._getPopperStyle()}>
+			<Portal
+				ref="portal"
+				className={`ignore-react-onclickoutside react-tooltip react-tooltip-${placement} ${className} ${flippedClass}`}
+				style={this._getPopperStyle()}
+				appendTo={appendTo}
+			>
 				<div className="react-tooltip-text">{title}</div>
 				{addArrow && <div ref="arrow" className="react-tooltip-arrow" style={this._getArrowStyle()}></div>}
 			</Portal>

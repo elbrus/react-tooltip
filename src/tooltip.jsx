@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Children, cloneElement, Component } from 'react';
-import PortalPopper from './portal-popper';
 import onClickOutside from 'react-onclickoutside';
+
+import PortalPopper from './portal-popper';
 
 const noop = () => false;
 
@@ -57,7 +58,7 @@ class Tooltip extends Component {
 
 	onToggleHandler = () => this.showHandler(!this.state.shouldShow);
 
-	getTargetNode = () => this.refs.target;
+	getTargetNode = () => this._target;
 
 	showHandler(shouldShow) {
 		this.setState({shouldShow});
@@ -88,14 +89,6 @@ class Tooltip extends Component {
 		);
 	}
 
-	handleClickOutside() {
-		const {trigger, rootClose} = this.props;
-
-		if (rootClose && ~trigger.indexOf('click')) {
-			this.showHandler(false);
-		}
-	}
-
 	createEvents(trigger) {
 		let events = {};
 
@@ -108,12 +101,19 @@ class Tooltip extends Component {
 
 	render() {
 		const {alwaysShow, children, trigger, holderClassName} = this.props;
+		const child = Children.only(children);
 		const actionProps = alwaysShow ? {} : this.createEvents(trigger);
 
 		return (
 			<span className={holderClassName}>
-				{cloneElement(Children.only(children), {
-					ref: 'target',
+				{cloneElement(child, {
+					ref: (node) => {
+						this._target = node;
+
+						if (typeof child.ref === 'function') {
+							child.ref(node)
+						}
+					},
 					...actionProps
 				})}
 				{this._popper()}
@@ -129,7 +129,6 @@ Tooltip.propTypes = {
 	title: PropTypes.node.isRequired,
 	alwaysShow: PropTypes.bool,
 	addArrow: PropTypes.bool,
-	rootClose: PropTypes.bool,
 	trigger: PropTypes.arrayOf(PropTypes.oneOf(['click', 'hover', 'focus', 'click-close'])),
 	hoverOpenDelay: PropTypes.number,
 	hoverCloseDelay: PropTypes.number,

@@ -16,8 +16,7 @@ $arrow-size: 5px !default;
 }
 
 .react-tooltip-arrow {
-	border-color: transparent;
-	border-style: solid;
+	border: solid transparent;
 	height: 0;
 	position: absolute;
 	width: 0;
@@ -25,7 +24,10 @@ $arrow-size: 5px !default;
 
 .react-tooltip-top,
 .react-tooltip-top-start,
-.react-tooltip-top-end {
+.react-tooltip-top-end,
+.react-tooltip-bottom.react-tooltip-flipped,
+.react-tooltip-bottom-start.react-tooltip-flipped,
+.react-tooltip-bottom-end.react-tooltip-flipped {
 	margin-bottom: $arrow-size;
 
 	.react-tooltip-arrow {
@@ -37,7 +39,10 @@ $arrow-size: 5px !default;
 
 .react-tooltip-right,
 .react-tooltip-right-start,
-.react-tooltip-right-end {
+.react-tooltip-right-end,
+.react-tooltip-left.react-tooltip-flipped,
+.react-tooltip-left-start.react-tooltip-flipped,
+.react-tooltip-left-end.react-tooltip-flipped {
 	margin-left: $arrow-size;
 
 	.react-tooltip-arrow {
@@ -49,7 +54,10 @@ $arrow-size: 5px !default;
 
 .react-tooltip-left,
 .react-tooltip-left-start,
-.react-tooltip-left-end {
+.react-tooltip-left-end,
+.react-tooltip-right.react-tooltip-flipped,
+.react-tooltip-right-start.react-tooltip-flipped,
+.react-tooltip-right-end.react-tooltip-flipped {
 	margin-right: $arrow-size;
 
 	.react-tooltip-arrow {
@@ -61,7 +69,10 @@ $arrow-size: 5px !default;
 
 .react-tooltip-bottom,
 .react-tooltip-bottom-start,
-.react-tooltip-bottom-end {
+.react-tooltip-bottom-end,
+.react-tooltip-top.react-tooltip-flipped,
+.react-tooltip-top-start.react-tooltip-flipped,
+.react-tooltip-top-end.react-tooltip-flipped {
 	margin-top: $arrow-size;
 
 	.react-tooltip-arrow {

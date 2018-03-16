@@ -1,8 +1,7 @@
 {
-  "env": {
-    "node": true
-  },
-  "parserOptions": {
-    "ecmaVersion": 6
-  }
+  "extends": [
+    "plugin:cypress-dev/general",
+    "plugin:cypress-dev/react",
+    "plugin:cypress-dev/tests"
+  ]
 }
