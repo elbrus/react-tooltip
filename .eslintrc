@@ -1,7 +1,0 @@
-{
-  "extends": [
-    "plugin:cypress-dev/general",
-    "plugin:cypress-dev/react",
-    "plugin:cypress-dev/tests"
-  ]
-}
