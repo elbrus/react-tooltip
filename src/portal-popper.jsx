@@ -23,12 +23,15 @@ class PortalPopper extends Component {
 		getTargetNode: PropTypes.func.isRequired,
 		title: PropTypes.node.isRequired,
 		addArrow: PropTypes.bool,
-		appendTo: PropTypes.node
+		appendTo: PropTypes.any,
+		Popper: PropTypes.any,
+		boundary: PropTypes.node
 	};
 
 	static defaultProps = {
 		className: '',
-		addArrow: true
+		addArrow: true,
+		Popper
 	};
 
 	state = {
@@ -40,7 +43,7 @@ class PortalPopper extends Component {
 	componentDidMount() {
 		const {getTargetNode, title, placement, boundary} = this.props;
 
-		this.popper = new Popper(getTargetNode(), this.refs.portal.domNode, {
+		this.popper = new this.props.Popper(getTargetNode(), this.refs.portal.domNode, {
 			content: title,
 			placement,
 			modifiers: {

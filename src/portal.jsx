@@ -5,7 +5,7 @@ import { render } from 'react-dom';
 
 class Portal extends Component {
 	static propTypes = {
-		appendTo: PropTypes.node
+		appendTo: PropTypes.any
 	};
 
 	static defaultProps = {
