@@ -7,6 +7,30 @@ import PortalPopper from './portal-popper';
 const noop = () => false;
 
 class Tooltip extends Component {
+	static propTypes = {
+		className: PropTypes.string,
+		holderClassName: PropTypes.string,
+		placement: PropTypes.string,
+		title: PropTypes.node.isRequired,
+		alwaysShow: PropTypes.bool,
+		addArrow: PropTypes.bool,
+		rootClose: PropTypes.bool,
+		trigger: PropTypes.arrayOf(PropTypes.oneOf(['click', 'hover', 'focus', 'click-close'])),
+		hoverOpenDelay: PropTypes.number,
+		hoverCloseDelay: PropTypes.number,
+		onOpen: PropTypes.func,
+		onClose: PropTypes.func
+	};
+
+	static defaultProps = {
+		placement: 'top',
+		trigger: ['hover'],
+		hoverOpenDelay: 400,
+		hoverCloseDelay: 100,
+		onOpen: noop,
+		onClose: noop
+	};
+
 	state = {
 		shouldShow: false
 	};
@@ -89,6 +113,15 @@ class Tooltip extends Component {
 		);
 	}
 
+	// NOTE: required for onClickOutside to work
+	handleClickOutside() {
+		const {trigger, rootClose} = this.props;
+
+		if (rootClose && ~trigger.indexOf('click')) {
+			this.showHandler(false);
+		}
+	}
+
 	createEvents(trigger) {
 		let events = {};
 
@@ -121,28 +154,5 @@ class Tooltip extends Component {
 		)
 	}
 }
-
-Tooltip.propTypes = {
-	className: PropTypes.string,
-	holderClassName: PropTypes.string,
-	placement: PropTypes.string,
-	title: PropTypes.node.isRequired,
-	alwaysShow: PropTypes.bool,
-	addArrow: PropTypes.bool,
-	trigger: PropTypes.arrayOf(PropTypes.oneOf(['click', 'hover', 'focus', 'click-close'])),
-	hoverOpenDelay: PropTypes.number,
-	hoverCloseDelay: PropTypes.number,
-	onOpen: PropTypes.func,
-	onClose: PropTypes.func
-};
-
-Tooltip.defaultProps = {
-	placement: 'top',
-	trigger: ['hover'],
-	hoverOpenDelay: 400,
-	hoverCloseDelay: 100,
-	onOpen: noop,
-	onClose: noop
-};
 
 export default onClickOutside(Tooltip);
