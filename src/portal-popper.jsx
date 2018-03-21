@@ -43,7 +43,7 @@ class PortalPopper extends Component {
 	componentDidMount() {
 		const {getTargetNode, title, placement, boundary} = this.props;
 
-		this.popper = new this.props.Popper(getTargetNode(), this.refs.portal.domNode, {
+		this.popper = new this.props.Popper(getTargetNode(), this.refs.portal._element, {
 			content: title,
 			placement,
 			modifiers: {

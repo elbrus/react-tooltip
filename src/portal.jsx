@@ -1,10 +1,12 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 
 class Portal extends Component {
 	static propTypes = {
+		className: PropTypes.string,
+		style: PropTypes.object,
 		appendTo: PropTypes.any
 	};
 
@@ -14,39 +16,36 @@ class Portal extends Component {
 
 	static idNum = 0;
 
-	componentDidMount() {
-		const {appendTo} = this.props;
+	constructor(props) {
+		super(props);
+
+		const {appendTo, className, style} = props;
 		const id = `portal-${Portal.idNum++}`;
 		let element = appendTo.ownerDocument.getElementById(id);
 
 		if (!element) {
 			element = appendTo.ownerDocument.createElement('div');
 			element.id = id;
-			appendTo.appendChild(element);
+			element.className = className;
+			element.style = style;
 		}
 
 		this._element = element;
-		this.componentDidUpdate();
 	}
 
-	componentDidUpdate() {
-		render((
-			<div ref={this.onSetRef} {..._.omit(this.props, 'children', 'appendTo')}>
-				{this.props.children}
-			</div>
-		), this._element);
+	componentDidMount() {
+		this.props.appendTo.appendChild(this._element);
 	}
 
 	componentWillUnmount() {
 		this.props.appendTo.removeChild(this._element);
 	}
 
-	onSetRef = (ref) => {
-		this.domNode = ref;
-	};
-
 	render() {
-		return null;
+		return ReactDOM.createPortal(
+			this.props.children,
+			this._element
+		);
 	}
 }
 

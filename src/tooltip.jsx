@@ -126,7 +126,10 @@ class Tooltip extends Component {
 		let events = {};
 
 		[...new Set(trigger)].forEach(item => {
-			events = Object.assign(events, this.triggers[item]);
+			events = {
+				...events,
+				...this.triggers[item]
+			};
 		});
 
 		return events;
