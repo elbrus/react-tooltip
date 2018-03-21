@@ -8,6 +8,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _class, _temp2;
+
 var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -38,7 +40,7 @@ var noop = function noop() {
 	return false;
 };
 
-var Tooltip = function (_Component) {
+var Tooltip = (_temp2 = _class = function (_Component) {
 	_inherits(Tooltip, _Component);
 
 	function Tooltip() {
@@ -138,6 +140,21 @@ var Tooltip = function (_Component) {
 				ref: 'popper'
 			});
 		}
+
+		// NOTE: required for onClickOutside to work
+
+	}, {
+		key: 'handleClickOutside',
+		value: function handleClickOutside() {
+			var _props2 = this.props,
+			    trigger = _props2.trigger,
+			    rootClose = _props2.rootClose;
+
+
+			if (rootClose && ~trigger.indexOf('click')) {
+				this.showHandler(false);
+			}
+		}
 	}, {
 		key: 'createEvents',
 		value: function createEvents(trigger) {
@@ -146,7 +163,7 @@ var Tooltip = function (_Component) {
 			var events = {};
 
 			[].concat(_toConsumableArray(new Set(trigger))).forEach(function (item) {
-				events = Object.assign(events, _this2.triggers[item]);
+				events = _extends({}, events, _this2.triggers[item]);
 			});
 
 			return events;
@@ -156,11 +173,11 @@ var Tooltip = function (_Component) {
 		value: function render() {
 			var _this3 = this;
 
-			var _props2 = this.props,
-			    alwaysShow = _props2.alwaysShow,
-			    children = _props2.children,
-			    trigger = _props2.trigger,
-			    holderClassName = _props2.holderClassName;
+			var _props3 = this.props,
+			    alwaysShow = _props3.alwaysShow,
+			    children = _props3.children,
+			    trigger = _props3.trigger,
+			    holderClassName = _props3.holderClassName;
 
 			var child = _react.Children.only(children);
 			var actionProps = alwaysShow ? {} : this.createEvents(trigger);
@@ -183,30 +200,26 @@ var Tooltip = function (_Component) {
 	}]);
 
 	return Tooltip;
-}(_react.Component);
-
-Tooltip.propTypes = {
+}(_react.Component), _class.propTypes = {
 	className: _propTypes2.default.string,
 	holderClassName: _propTypes2.default.string,
 	placement: _propTypes2.default.string,
 	title: _propTypes2.default.node.isRequired,
 	alwaysShow: _propTypes2.default.bool,
 	addArrow: _propTypes2.default.bool,
+	rootClose: _propTypes2.default.bool,
 	trigger: _propTypes2.default.arrayOf(_propTypes2.default.oneOf(['click', 'hover', 'focus', 'click-close'])),
 	hoverOpenDelay: _propTypes2.default.number,
 	hoverCloseDelay: _propTypes2.default.number,
 	onOpen: _propTypes2.default.func,
 	onClose: _propTypes2.default.func
-};
-
-Tooltip.defaultProps = {
+}, _class.defaultProps = {
 	placement: 'top',
 	trigger: ['hover'],
 	hoverOpenDelay: 400,
 	hoverCloseDelay: 100,
 	onOpen: noop,
 	onClose: noop
-};
-
+}, _temp2);
 exports.default = (0, _reactOnclickoutside2.default)(Tooltip);
 module.exports = exports['default'];

@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _class, _temp2;
+
 var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -45,7 +47,7 @@ var initialPopperProps = {
 	top: 0
 };
 
-var PortalPopper = function (_Component) {
+var PortalPopper = (_temp2 = _class = function (_Component) {
 	_inherits(PortalPopper, _Component);
 
 	function PortalPopper() {
@@ -96,7 +98,7 @@ var PortalPopper = function (_Component) {
 			    boundary = _props.boundary;
 
 
-			this.popper = new this.props.Popper(getTargetNode(), this.refs.portal.domNode, {
+			this.popper = new this.props.Popper(getTargetNode(), this.refs.portal._element, {
 				content: title,
 				placement: placement,
 				modifiers: {
@@ -191,21 +193,19 @@ var PortalPopper = function (_Component) {
 	}]);
 
 	return PortalPopper;
-}(_react.Component);
-
-PortalPopper.propTypes = {
+}(_react.Component), _class.propTypes = {
 	className: _propTypes2.default.string,
 	placement: _propTypes2.default.string.isRequired,
 	getTargetNode: _propTypes2.default.func.isRequired,
 	title: _propTypes2.default.node.isRequired,
-	addArrow: _propTypes2.default.bool
-};
-
-PortalPopper.defaultProps = {
-	Popper: _popper2.default,
+	addArrow: _propTypes2.default.bool,
+	appendTo: _propTypes2.default.any,
+	Popper: _propTypes2.default.any,
+	boundary: _propTypes2.default.node
+}, _class.defaultProps = {
+	className: '',
 	addArrow: true,
-	className: ''
-};
-
+	Popper: _popper2.default
+}, _temp2);
 exports.default = PortalPopper;
 module.exports = exports['default'];
