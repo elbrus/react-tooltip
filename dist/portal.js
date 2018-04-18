@@ -51,7 +51,7 @@ var Portal = (_temp = _class = function (_Component) {
 			element = appendTo.ownerDocument.createElement('div');
 			element.id = id;
 			element.className = className;
-			element.style = style;
+			element.setAttribute('style', style);
 		}
 
 		_this._element = element;
