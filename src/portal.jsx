@@ -27,7 +27,7 @@ class Portal extends Component {
 			element = appendTo.ownerDocument.createElement('div');
 			element.id = id;
 			element.className = className;
-			element.style = style;
+			element.setAttribute('style', style);
 		}
 
 		this._element = element;
